@@ -1,16 +1,22 @@
 <?php
-declare(strict_types=1);
+// ==== KONFIGURASI DATABASE ====
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'url_shortener');
+define('DB_USER', 'root');
+define('DB_PASS', '');
 
-$host = 'localhost';
-$db   = 'url_shortener';
-$user = 'root';
-$pass = '';
-$port = 3306;
+// Base URL aplikasi (tanpa trailing slash di akhir).
+// Ini domain Cloudflare Tunnel kamu, misal: https://s.mikhacavin.com
+define('BASE_URL', 'https://s.mikhacavin.com');
 
-$conn = new mysqli($host, $user, $pass, $db, $port);
-
-if ($conn->connect_error) {
-    die('Koneksi database gagal: ' . $conn->connect_error);
+function getDB() {
+    static $pdo = null;
+    if ($pdo === null) {
+        $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4';
+        $pdo = new PDO($dsn, DB_USER, DB_PASS, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        ]);
+    }
+    return $pdo;
 }
-
-$conn->set_charset('utf8mb4');

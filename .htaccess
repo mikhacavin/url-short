@@ -1,8 +1,0 @@
-RewriteEngine On
-
-# Jangan rewrite file/folder yang benar-benar ada.
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-
-# /abc123 -> index.php?c=abc123
-RewriteRule ^([A-Za-z0-9_-]+)$ index.php?c=$1 [L,QSA]
